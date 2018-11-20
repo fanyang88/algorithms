@@ -27,27 +27,27 @@ S only consists of '0' and '1' characters.
  * @return {number}
  
  "0100110" 
- we use zeros to indicate how many zeros left need to be flip to 1,
- we use flips to indicate how many flips happened to flip 1 to be 0.
- In worse case, we flip all 0 to 1, init zeros= 4, flips = 0
- i=0, zeros--=3 min = zeros+flip=3
- i=1, it is 1, assume we flip 1 to 0, min< flip(1) + zeros(3)=4 no update
- i=2, zeros--=2 best = flip(1) + zeros(2)=3
- i=3, zeros--=1 best = flip(1) + zeros(1)=2
- i=4, it is 1, assume we flip, flip=2, min < flips(2) + zeros(1)=3 no update 
- i=5, it is 1, assume we flip, flip=3, min < flips(3) + zeros(1)=4 no update  
+ we use flip0to1 to indicate how many zeros left need to be flip to 1,
+ we use flip1to0 to indicate how many flips happened to flip 1 to be 0.
+ In worse case, we flip all 0 to 1, init flip0to1= 4, flip1to0 = 0
+ i=0, flip0to1--=3 min = flip0to1+flip1to0 = 3
+ i=1, it is 1, assume we flip 1 to 0, min< flip1to0(1) + flip0to1(3)=4 no update
+ i=2, flip0to1--=2 best = flip1to0(1) + flip0to1(2)=3
+ i=3, flip0to1--=1 best = flip1to0(1) + flip0to1(1)=2
+ i=4, it is 1, assume we flip, flip1to0=2, min < flip1to0(2) + flip0to1(1)=3 no update 
+ i=5, it is 1, assume we flip, flip1to0=3, min < flip1to0(3) + flip0to1(1)=4 no update  
  min= 2
  */
 var minFlipsMonoIncr = function(S) {
-    var zeros = 0, flips = 0;
+    var flip0to1 = 0, flip1to0 = 0;
     for(var chr of S) {
-        if(chr === '0') zeros ++;
+        if(chr === '0') flip0to1 ++;
     }
-    var min = zeros;
+    var min = flip0to1;
     for(var chr of S) {
-        if(chr === '0') zeros --;
-        else flips++;
-        min = Math.min(min, flips + zeros);
+        if(chr === '0') flip0to1 --;
+        else flip1to0++;
+        min = Math.min(min, flip1to0 + flip0to1);
     }
     return min;
 };
